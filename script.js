@@ -1,5 +1,12 @@
 const gameContainer = document.getElementById("game");
 
+const scoreBox = document.querySelector('#bestScore');
+const currentScore = document.querySelector('#currentScore');
+const gameDiv = document.getElementById('game');
+let clicks = 0;
+let matchedCards = 0;
+let lastFlipped = null;
+
 const COLORS = [
   "red",
   "blue",
@@ -58,11 +65,7 @@ function createDivsForColors(colorArray) {
   }
 }
 
-scoreBox = document.querySelector('#bestScore');
-currentScore = document.querySelector('#currentScore');
-gameDiv = document.getElementById('game');
-clicks = 0;
-matchedCards = 0;
+
 // TODO: Implement this function!
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
@@ -84,10 +87,11 @@ function handleCardClick(event) {
       if(event.target.className !== lastColor){
         timer = setTimeout(function(){
         event.target.style.backgroundColor = null;
+        lastFlipped.style.backgroundColor = null;
         lastColor = event.target.className;
         }, 1000)
       }
-      else{
+      else if (event.target !== lastFlipped){
         event.target.className = `${event.target.className} matched`;
         clearTimeout(timer)
         event.target.removeEventListener("click", handleCardClick);
@@ -107,6 +111,7 @@ function handleCardClick(event) {
     alert("Good job!");
 
   }
+  lastFlipped = event.target;
   }
   
 
